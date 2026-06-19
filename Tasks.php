@@ -67,12 +67,13 @@ public function update($id,$description){
               return;
         }
     }
-   
+   echo "task with id {$id} not found ";
 
 }
  public function delete($id){
+
        $tasks=$this->readTasks();
-       foreach($tasks as $task){
+       foreach($tasks as $key=>$task){
         if($task['id']==$id){
             unset($tasks[$key]);
             $this->saveTasks(array_values($tasks));
@@ -81,10 +82,44 @@ public function update($id,$description){
         }
        }
     }
-  
-
-
+  public function markAsInProgress($id,$status){
+$tasks=$this->readTasks();
+foreach($tasks as &$task){
+    if($task['id']==$id){
+        $task['status']='in progress';
+        $task['updated_at']=date("Y-m-d H:i:s");
+        $this->saveTasks(array_values($tasks));
+            echo "task with id {$id} is now in progress\n\n";
+            return;
+    }
 }
+  }
+public function markDone($id)
+{
+    $tasks = $this->readTasks();
+
+    foreach ($tasks as &$task) {
+
+        if ($task['id'] == $id) {
+
+            $task['status'] = "done";
+            $task['updated_at'] = date("Y-m-d H:i:s");
+
+            $this->saveTasks($tasks);
+
+            echo "Task with ID {$id} is marked as done.\n";
+            return;
+        }
+    }
+
+    echo "Task with ID {$id} not found.\n";
+}
+    }
+
+    
+
+
+
   $tracker= new TaskTracker();
   $command= $argv[1] ?? null;
   switch("$command"){
@@ -110,6 +145,12 @@ public function update($id,$description){
         }
         $tracker->delete($argv[2]);
         break;
+        case "startTask":
+                $tracker->markAsInProgress($argv[2], $argv[3]);
+        break;
+        case "finishTask":
+            $tracker->markDone($argv[2]);
+
     default:
         echo "\nTask Tracker Commands:\n\n";
   }
