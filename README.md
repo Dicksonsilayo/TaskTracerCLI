@@ -1,4 +1,8 @@
 # TaskTracerCLI 
+# this is a challenge from https://roadmap.sh/projects/task-tracker
+
+# i did the challenge in the repository https://github.com/Dicksonsilayo/TaskTracerCLI 
+
 # this is commandline interface program that simulate a task tracker activity where user can do the following
 
 # 1 adding new task 
